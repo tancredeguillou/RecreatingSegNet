@@ -37,10 +37,19 @@ class SegNetLite(nn.Module):
         # following output dimension (igoring batch dimension):
         # 3 x 64 x 64 (input) -> 32 x 32 x 32 -> 64 x 16 x 16 -> 128 x 8 x 8 -> 256 x 4 x 4
         # each block should consist of: Conv2d->BatchNorm2d->ReLU->MaxPool2d
-        layers_conv_down = []
-        layers_bn_down = []
-        layers_pooling = []
-        raise NotImplementedError('Downsampling layers are not implemented!')
+        #MY WORK DOWN HERE - WE WANT TO ITERATE
+        layers_conv_down = [nn.Conv2d(input_size, down_filter_sizes[0], padding=conv_paddings[0]),
+                            nn.Conv2d(down_filter_sizes[0], down_filter_sizes[1], padding=conv_paddings[1]),
+                            nn.Conv2d(down_filter_sizes[1], down_filter_sizes[2], padding=conv_paddings[2]),
+                            nn.Conv2d(down_filter_sizes[2], down_filter_sizes[3], padding=conv_paddings[3])]
+
+        layers_bn_down = [nn.BatchNorm2d(down_filter_sizes[0]),
+                            nn.BatchNorm2d(down_filter_sizes[1]),
+                            nn.BatchNorm2d(down_filter_sizes[2]),
+                            nn.BatchNorm2d(down_filter_sizes[3])]
+
+        layers_pooling = [nn.MaxPool2d(pooling_kernel_sizes[i], pooling_strides[i]) for i in self.num_up_layers]
+        #MY WORK UP HERE
 
         # Convert Python list to nn.ModuleList, so that PyTorch's autograd
         # package can track gradients and update parameters of these layers
@@ -53,7 +62,7 @@ class SegNetLite(nn.Module):
         # following output dimension (igoring batch dimension):
         # 256 x 4 x 4 (input) -> 128 x 8 x 8 -> 64 x 16 x 16 -> 32 x 32 x 32 -> 32 x 64 x 64
         # each block should consist of: MaxUnpool2d->Conv2d->BatchNorm2d->ReLU
-        layers_conv_up = []
+        layers_conv_up = [i for i in self.num_down_layers]
         layers_bn_up = []
         layers_unpooling = []
         raise NotImplementedError('Upsampling layers are not implemented!')

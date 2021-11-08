@@ -1,23 +1,24 @@
 # Recreating SegNet : Implementation
 
+If you're not familiar with the SegNet algorithm, you can visit the following [website](https://medium.com/@fezancs/understanding-of-semantic-segmentation-how-segnet-model-work-to-perform-semantic-segmentation-5c426112e499).
+
+Here, our model will contain eight levels:
+- Four downscaling levels containging the following layers : Convolutional, Batch Normalisation, ReLu, Pooling.
+- Four upscaling levels containing the following layers : Upsampling, Convolutional, Batch Normalisation, ReLu.
+We end the model by computing Softmax and a final linear layer.
+
 ## Overview
 - `image_segmentation/`: includes training and validation scripts.
 - `lib/`: contains core functions, data preparation, model definition, and utility functions.
 
 ## Installation
-1. Install either [miniconda](https://docs.conda.io/en/latest/miniconda.html) or [anaconda](https://www.anaconda.com/).
-2. Create a virtual environment and activate it:
-   ```
-   conda create -n CV21_Image_Segmentation python=3.8
-   conda activate CV21_Image_Segmentation
-   ```
-3. Install PyTorch 1.9.1 from the [official website](https://pytorch.org/get-started/locally/). CPU-only version is sufficient for this assignment. 
-4. Install dependencies.
+1. This project uses [miniconda](https://docs.conda.io/en/latest/miniconda.html) and [PyTorch 1.9.1](https://docs.conda.io/en/latest/miniconda.html).
+2. To install dependencies, run:
    ```
    pip install -r requirements.txt
    ```
    NOTE: TensorBorad and tensorboardX may not be compatible on some platforms. If you encounter difficulties when installing them, just remove them from `requirements.txt`. They are used solely for visualizing your results, which is optional (but helpful) for building your model.
-5. Add current project directory (which we will later denote as ${ROOT}) to PYTHONPATH environment variable.
+3. Add current project directory (which we will later denote as ${ROOT}) to PYTHONPATH environment variable.
    ```
    export PYTHONPATH=${PYTHONPATH}:${PWD}
    ```
